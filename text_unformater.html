@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formateador de Texto PDF</title>
+  <!-- Materialize CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      padding: 2rem;
+    }
+    textarea {
+      resize: vertical;
+    }
+    .output-container {
+      position: relative;
+      margin-top: 1rem;
+    }
+    .output-box {
+      white-space: pre-wrap;
+      background-color: #f5f5f5;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      min-height: 100px;
+    }
+    .copy-btn {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h4><i class="material-icons left">description</i>Formateador de Texto PDF</h4>
+    <p>Este programa elimina los saltos de línea y los guiones para que el texto quede continuo.</p>
+
+    <div class="input-field">
+      <textarea id="inputText" class="materialize-textarea" placeholder="Pegue aquí el texto extraído del PDF..."></textarea>
+      <label for="inputText">Texto a formatear</label>
+    </div>
+
+    <button class="btn waves-effect waves-light" onclick="formatearTexto()">
+      Formatear
+      <i class="material-icons right">build</i>
+    </button>
+
+    <div class="section">
+      <h5>Salida de texto:</h5>
+      <div class="output-container">
+        <div id="outputText" class="output-box"></div>
+      </div>
+      <button class="btn waves-effect waves-light copy-btn" data-tooltip="Copiar al portapapeles" onclick="copiarTexto()">
+        Copiar al Portapapeles
+        <i class="material-icons right">content_copy</i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Materialize JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      M.AutoInit(); // Inicializa tooltips y otros componentes
+    });
+
+    function formatearTexto() {
+      const input = document.getElementById('inputText').value;
+
+      const output = input
+        .replace(/\n/g, ' ')
+        .replace(/- /g, '')
+        .replace(/]/g, 'µ');
+
+      document.getElementById('outputText').textContent = output;
+    }
+
+    function copiarTexto() {
+      const text = document.getElementById('outputText').textContent;
+
+      navigator.clipboard.writeText(text).then(() => {
+        M.toast({ html: 'Texto copiado al portapapeles', displayLength: 2000 });
+      }).catch(err => {
+        M.toast({ html: 'Error al copiar el texto', displayLength: 2000 });
+      });
+    }
+  </script>
+</body>
+</html>
